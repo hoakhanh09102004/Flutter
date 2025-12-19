@@ -53,88 +53,147 @@ class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _HomeScreenState createState() => _HomeScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  bool _isExpanded = false;
+  bool _isExpanded = false;//dong mo menu
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {//lay kich thuoc man hinh
+    final width = MediaQuery.of(context).size.width;
+
     return Scaffold(
-      // appBar: AppBar(title: const Text('Menu')),
-      body: Column(
+      body: Stack(//chồng widget
         children: [
-          ListTile(
-            leading: Icon(_isExpanded ? Icons.close : Icons.menu),
-            title: const Text('DANH SÁCH CÁC BÀI'),
-            onTap: () {
-              setState(() {
-                _isExpanded = !_isExpanded;
-              });
-            },
-          ),
-          if (_isExpanded)
-            Expanded(
-              child: ListView(
-                children: [
-                  ListTile(
-                    title: const Text('MyHome'),
-                    onTap: () => Navigator.pushNamed(context, '/bai1'),
-                  ),
-                  ListTile(
-                    title: const Text('MyClassroom'),
-                    onTap: () => Navigator.pushNamed(context, '/bai2'),
-                  ),
-                  ListTile(
-                    title: const Text('MyGuide'),
-                    onTap: () => Navigator.pushNamed(context, '/bai3'),
-                  ),
-                  ListTile(
-                    title: const Text('MyHotel'),
-                    onTap: () => Navigator.pushNamed(context, '/bai4'),
-                  ),
-                  ListTile(
-                    title: const Text('ChangeColorApp'),
-                    onTap: () => Navigator.pushNamed(context, '/bai5'),
-                  ),
-                  ListTile(
-                    title: const Text('CounterApp'),
-                    onTap: () => Navigator.pushNamed(context, '/bai6'),
-                  ),
-                  ListTile(
-                    title: const Text('CountDownTimer'),
-                    onTap: () => Navigator.pushNamed(context, '/bai7'),
-                  ),
-                  ListTile(
-                    title: const Text('FormLogin'),
-                    onTap: () => Navigator.pushNamed(context, '/bai8'),
-                  ),
-                  ListTile(
-                    title: const Text('FormSigin'),
-                    onTap: () => Navigator.pushNamed(context, '/bai9'),
-                  ),
-                  ListTile(
-                    title: const Text('Store'),
-                    onTap: () => Navigator.pushNamed(context, '/bai10'),
-                  ),
-                  ListTile(
-                    title: const Text('News'),
-                    onTap: () => Navigator.pushNamed(context, '/bai11'),
-                  ),
-                  ListTile(
-                    title: const Text('Login Profile API'),
-                    onTap: () => Navigator.pushNamed(context, '/bai12'),
-                  ),
+          /// BACKGROUND
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xffe3f2fd),
+                  Color(0xfffce4ec),
                 ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
               ),
             ),
+          ),
+
+          /// 📦 CONTENT
+          Column(
+            children: [
+              SafeArea(
+                child: ListTile(
+                  leading: Icon(
+                    _isExpanded ? Icons.close : Icons.menu,
+                    size: 28,
+                  ),
+                  title: const Text(
+                    'DANH SÁCH CÁC BÀI',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                  onTap: () {
+                    setState(() {
+                      _isExpanded = !_isExpanded;
+                    });
+                  },
+                ),
+              ),
+
+              Expanded(
+                child: Row(
+                  children: [
+                    ///  MENU BÊN TRÁI
+                    if (_isExpanded)
+                      Container(
+                        width: width * 0.5,
+                        margin: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.95),
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 10,
+                              offset: Offset(2, 4),
+                            )
+                          ],
+                        ),
+                        child: ListView(
+                          padding: const EdgeInsets.all(8),
+                          children: [
+                            _menuItem('Bài1: MyHome', '/bai1'),
+                            _menuItem('Bài2: MyClassroom', '/bai2'),
+                            _menuItem('Bài3: MyGuide', '/bai3'),
+                            _menuItem('Bài4: MyHotel', '/bai4'),
+                            _menuItem('Bài5: ChangeColorApp', '/bai5'),
+                            _menuItem('Bài6: CounterApp', '/bai6'),
+                            _menuItem('Bài7: CountDownTimer', '/bai7'),
+                            _menuItem('Bài8: FormLogin', '/bai8'),
+                            _menuItem('Bài9: FormSigin', '/bai9'),
+                            _menuItem('Bài10: Store', '/bai10'),
+                            _menuItem('Bài11: News', '/bai11'),
+                            _menuItem('Bài12: Login Profile API', '/bai12'),
+                          ],
+                        ),
+                      ),
+
+                    /// 👉 PHẦN BÊN PHẢI (có thể để trống / sau này thêm nội dung)
+                    Expanded(
+                      child: Center(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                'Lập trình ứng dụng cho thiết bị di động',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                  color: const Color.fromARGB(255, 210, 25, 25),
+                                ),
+                              ),
+                              const SizedBox(height: 12),
+                              Text(
+                                'Nhóm 5',
+                                style: TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                  color: const Color.fromARGB(255, 210, 25, 25),
+                                ),
+                              ),
+                            ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
   }
+
+  /// 🔹 Widget menu item
+  Widget _menuItem(String title, String route) {
+    return Card(
+      elevation: 2,
+      margin: const EdgeInsets.symmetric(vertical: 6),
+      child: ListTile(
+        title: Text(title),
+        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+        onTap: () => Navigator.pushNamed(context, route),
+      ),
+    );
+  }
 }
+
 
 
 
